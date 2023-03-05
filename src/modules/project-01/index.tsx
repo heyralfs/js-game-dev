@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { animate, PlayerStates } from "../../scripts/01";
+import { animate, PlayerStates } from "./script";
 import styles from "./styles.module.css";
 
 export const Project01 = () => {

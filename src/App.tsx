@@ -1,4 +1,4 @@
-import { Project01 } from "./pages";
+import { Project01 } from "./modules/project-01";
 
 export const App = () => {
 	return <Project01 />;
