@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { animate, PlayerStates } from "./script";
+import { ProjectPage } from "../../interfaces";
+import { run, PlayerStates } from "./script";
 import styles from "./styles.module.css";
 
-export const Project01 = () => {
+export const Project01: ProjectPage = ({ goBack }) => {
 	const stateNames = Object.keys(
 		PlayerStates
 	) as (keyof typeof PlayerStates)[];
@@ -14,13 +15,7 @@ export const Project01 = () => {
 
 	useEffect(() => {
 		if (!canvasRef.current) return;
-
-		const ctx = canvasRef.current.getContext("2d")!;
-		const canvasWidth = (canvasRef.current.width = 600);
-		const canvasHeight = (canvasRef.current.height = 600);
-
-		// todo: fix the "animation speed-up" side effect when calling animate over and over again
-		animate(playerState, ctx, canvasWidth, canvasHeight);
+		run(playerState);
 	}, [playerState]);
 
 	return (
@@ -41,7 +36,9 @@ export const Project01 = () => {
 				</select>
 			</div>
 
-			<canvas ref={canvasRef} />
+			<canvas id="canvas1" ref={canvasRef} />
+
+			<button onClick={goBack}>Go back</button>
 		</div>
 	);
 };

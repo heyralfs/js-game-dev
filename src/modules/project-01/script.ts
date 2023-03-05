@@ -21,9 +21,6 @@ playerImage.src = "./src/assets/shadow_dog.png";
 const spriteWidth = 575;
 const spriteHeight = 523;
 
-let gameFrame = 0;
-const staggerFrames = 5;
-
 const spriteAnimations = {} as SprintAnimation;
 
 const animationsStates: { name: PlayerStates; frames: number }[] = [
@@ -49,34 +46,40 @@ animationsStates.forEach((state, index) => {
 	spriteAnimations[state.name] = frames;
 });
 
-export function animate(
-	playerState: PlayerStates,
-	ctx: CanvasRenderingContext2D,
-	canvasWidth: number,
-	canvasHeight: number
-) {
-	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+export function run(playerState: PlayerStates) {
+	const canvas = <HTMLCanvasElement>document.getElementById("canvas1");
+	const ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
 
-	const position =
-		Math.floor(gameFrame / staggerFrames) %
-		spriteAnimations[playerState].loc.length;
-	const frameX = spriteWidth * position;
-	const frameY = spriteAnimations[playerState].loc[position].y;
+	const CANVAS_WIDTH = (canvas.width = 600);
+	const CANVAS_HEIGHT = (canvas.height = 600);
 
-	ctx.drawImage(
-		playerImage,
-		frameX,
-		frameY,
-		spriteWidth,
-		spriteHeight,
-		0,
-		0,
-		spriteWidth,
-		spriteHeight
-	);
+	let gameFrame = 0;
+	const staggerFrames = 5;
 
-	gameFrame++;
-	requestAnimationFrame(() =>
-		animate(playerState, ctx, canvasWidth, canvasHeight)
-	);
+	function animate() {
+		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+		const position =
+			Math.floor(gameFrame / staggerFrames) %
+			spriteAnimations[playerState].loc.length;
+		const frameX = spriteWidth * position;
+		const frameY = spriteAnimations[playerState].loc[position].y;
+
+		ctx.drawImage(
+			playerImage,
+			frameX,
+			frameY,
+			spriteWidth,
+			spriteHeight,
+			0,
+			0,
+			spriteWidth,
+			spriteHeight
+		);
+
+		gameFrame++;
+		requestAnimationFrame(animate);
+	}
+
+	animate();
 }
